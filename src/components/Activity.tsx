@@ -40,6 +40,7 @@ interface TypeProps {
   thanksgivingTimerTime?: number;
   petitionTimerRunning?: boolean;
   petitionTimerTime?: number;
+  onClickHome: () => void; // call this on click of the dark tick button, passing the id
 }
 
 const Separator = () => <View style={styles.separator} />;
@@ -50,11 +51,15 @@ const Activity: FC<TypeProps> = (props) => {
   const [activityDescription, setActivityDescription] = useState(CALLING_DESC);
   const [time, setTime] = useState(5);
 
-  const resetTimer = (event: any) => {
+  /* const resetTimer = (event: any) => {
     setTime(5);
     setActivityName('call');
     setActivityTitle(CALLING_TITLE);
     setActivityDescription(CALLING_DESC);
+  }; */
+
+  const onClickHome = (event: any) => {
+    props.onClickHome();
   };
 
   useEffect(() => {
@@ -121,9 +126,6 @@ const Activity: FC<TypeProps> = (props) => {
 
   return (
     <View>
-      <View>
-        <Button title="Start" color="#0390fc" onPress={resetTimer} />
-      </View>
       <Separator />
       <View>
         <Text style={styles.title}>{activityTitle}</Text>
@@ -139,6 +141,21 @@ const Activity: FC<TypeProps> = (props) => {
         </Text>
       </View>
       <Separator />
+      <View>
+        <Button title="Exit 7 Minutes" color="#0390fc" onPress={onClickHome} />
+      </View>
+      {time < 0 && (
+        <View>
+          <Separator />
+          <View>
+            <Button
+              title="Back To Home"
+              color="#0390fc"
+              onPress={onClickHome}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };
