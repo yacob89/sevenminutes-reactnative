@@ -3,6 +3,24 @@ import {StyleSheet, Button, View, Text, Alert} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import StandardTimer from './StandardTimer';
 import {secondsToMinutes} from '../utils/secondsToMinutes';
+import {
+  CALLING_TITLE,
+  PRAYING_TITLE,
+  PRAY_READING_TITLE,
+  CONFESSION_TITLE,
+  CONSECRATION_TITLE,
+  THANKSGIVING_TITLE,
+  PETITION_TITLE,
+} from '../utils/constants';
+import {
+  CALLING_DESC,
+  PRAYING_DESC,
+  PRAY_READING_DESC,
+  CONFESSION_DESC,
+  CONSECRATION_DESC,
+  THANKSGIVING_DESC,
+  PETITION_DESC,
+} from '../utils/constants';
 
 interface TypeProps {
   title?: string; // Epoch number start time
@@ -27,11 +45,18 @@ interface TypeProps {
 const Separator = () => <View style={styles.separator} />;
 
 const Activity: FC<TypeProps> = (props) => {
-  const [activityName, setActivityName] = useState(props.activityName);
-  const [activityDescription, setActivityDescription] = useState(
-    props.description,
-  );
-  const [time, setTime] = useState(30);
+  const [activityName, setActivityName] = useState('call');
+  const [activityTitle, setActivityTitle] = useState(CALLING_TITLE);
+  const [activityDescription, setActivityDescription] = useState(CALLING_DESC);
+  const [time, setTime] = useState(5);
+
+  const resetTimer = (event: any) => {
+    setTime(5);
+    setActivityName('call');
+    setActivityTitle(CALLING_TITLE);
+    setActivityDescription(CALLING_DESC);
+  };
+
   useEffect(() => {
     if (props.timerRunning) {
       if (time < 0) {
@@ -45,24 +70,43 @@ const Activity: FC<TypeProps> = (props) => {
           switch (activityName) {
             case 'call':
               setActivityName('pray');
+              setActivityTitle(PRAYING_TITLE);
+              setActivityDescription(PRAYING_DESC);
+              setTime(5);
               break;
             case 'pray':
               setActivityName('prayread');
+              setActivityTitle(PRAY_READING_TITLE);
+              setActivityDescription(PRAY_READING_DESC);
+              setTime(6);
               break;
             case 'prayread':
               setActivityName('confession');
+              setActivityTitle(CONFESSION_TITLE);
+              setActivityDescription(CONFESSION_DESC);
+              setTime(7);
               break;
             case 'confession':
               setActivityName('consecration');
+              setActivityTitle(CONSECRATION_TITLE);
+              setActivityDescription(CONSECRATION_DESC);
+              setTime(8);
               break;
             case 'consecration':
               setActivityName('thanksgiving');
+              setActivityTitle(THANKSGIVING_TITLE);
+              setActivityDescription(THANKSGIVING_DESC);
+              setTime(9);
               break;
             case 'thanksgiving':
               setActivityName('petition');
+              setActivityTitle(PETITION_TITLE);
+              setActivityDescription(PETITION_DESC);
+              setTime(10);
               break;
             case 'petititon':
               setActivityName('end');
+              setTime(0);
               break;
           }
         }
@@ -78,40 +122,23 @@ const Activity: FC<TypeProps> = (props) => {
   return (
     <View>
       <View>
-        <Text style={styles.title}>
-          Adjust the color in a way that looks standard on each platform. On
-          iOS, the color prop controls the color of the text. On Android, the
-          color adjusts the background color of the button.
-        </Text>
-      </View>
-      <View>
-        <Button title="Start" color="#0390fc" onPress={() => setTime(120)} />
+        <Button title="Start" color="#0390fc" onPress={resetTimer} />
       </View>
       <Separator />
       <View>
-        <Text style={styles.title}>{secondsToMinutes(time)}</Text>
-        <Button
-          title="Press me"
-          disabled
-          onPress={() => Alert.alert('Cannot press this one')}
-        />
+        <Text style={styles.title}>{activityTitle}</Text>
+      </View>
+      <Separator />
+      <View>
+        <Text style={styles.title}>{activityDescription}</Text>
       </View>
       <Separator />
       <View>
         <Text style={styles.title}>
-          This layout strategy lets the title define the width of the button.
+          {time < 0 ? 'Selesai' : secondsToMinutes(time)}
         </Text>
-        <View style={styles.fixToText}>
-          <Button
-            title="Left button"
-            onPress={() => Alert.alert('Left button pressed')}
-          />
-          <Button
-            title="Right button"
-            onPress={() => Alert.alert('Right button pressed')}
-          />
-        </View>
       </View>
+      <Separator />
     </View>
   );
 };

@@ -18,6 +18,7 @@ interface TypeProps {
 const Separator = () => <View style={styles.separator} />;
 
 const Hello: FC<TypeProps> = (props) => {
+  const [timerStarted, setTimerStarted] = useState(false);
   /* useEffect(() => {
     if (props.timerRunning) {
       // save intervalId to clear the interval when the
@@ -33,6 +34,9 @@ const Hello: FC<TypeProps> = (props) => {
       // when we update it
     }
   }, [props.timerRunning, time, props.timerTimeFrom]); */
+  const startActivity = (event: any) => {
+    setTimerStarted(true);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,13 +46,10 @@ const Hello: FC<TypeProps> = (props) => {
         </View>
         <View>
           <Text style={styles.title}>Activity Title</Text>
-          <Button
-            title="Press me"
-            onPress={() => Alert.alert('Simple Button pressed')}
-          />
+          <Button title="Press me" onPress={startActivity} />
         </View>
         <Separator />
-        <Activity timerRunning={true} />
+        <Activity timerRunning={timerStarted} activityName={'call'} />
       </ScrollView>
     </SafeAreaView>
   );
