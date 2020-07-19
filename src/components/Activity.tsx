@@ -128,19 +128,28 @@ const Activity: FC<TypeProps> = (props) => {
     <View>
       <Separator />
       <View>
-        <Text style={styles.title}>{activityTitle}</Text>
+        <Text style={styles.titleTextStyle}>{activityTitle}</Text>
       </View>
       <Separator />
       <View>
-        <Text style={styles.title}>{activityDescription}</Text>
+        <Text style={styles.descriptionTextStyle}>{activityDescription}</Text>
       </View>
       <Separator />
       <View>
-        <Text style={styles.title}>
-          {time < 0 ? 'Selesai' : secondsToMinutes(time)}
+        <Text style={styles.timerTextStyle}>
+          {time < 0 ? '00:00' : secondsToMinutes(time)}
         </Text>
       </View>
       <Separator />
+      {time < 0 && (
+        <View>
+          <View>
+            <Text style={styles.praiseTheLordTextStyle}>Praise The Lord</Text>
+          </View>
+          <Separator />
+        </View>
+      )}
+
       <View>
         <Button title="Exit 7 Minutes" color="#0390fc" onPress={onClickHome} />
       </View>
@@ -185,6 +194,21 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: 'center',
+  },
+  titleTextStyle: {
+    textAlign: 'center',
+    fontSize: 36,
+  },
+  descriptionTextStyle: {
+    textAlign: 'center',
+  },
+  timerTextStyle: {
+    textAlign: 'center',
+    fontSize: 100,
+  },
+  praiseTheLordTextStyle: {
+    textAlign: 'center',
+    fontSize: 36,
   },
 });
 

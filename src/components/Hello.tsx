@@ -19,6 +19,14 @@ const Separator = () => <View style={styles.separator} />;
 
 const Hello: FC<TypeProps> = (props) => {
   const [timerStarted, setTimerStarted] = useState(false);
+  const [timesPressed, setTimesPressed] = useState(0);
+
+  let textLog = '';
+  if (timesPressed > 1) {
+    textLog = timesPressed + 'x onPress';
+  } else if (timesPressed > 0) {
+    textLog = 'onPress';
+  }
   const startActivity = (event: any) => {
     setTimerStarted(true);
   };
@@ -29,7 +37,7 @@ const Hello: FC<TypeProps> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <View>
         {timerStarted === false && (
           <View>
             <View>
@@ -53,7 +61,7 @@ const Hello: FC<TypeProps> = (props) => {
             onClickHome={onClickHome}
           />
         )}
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -62,6 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     marginHorizontal: 16,
     padding: 8,
   },
@@ -83,6 +92,13 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: 'center',
+  },
+  wrapperCustom: {
+    borderRadius: 8,
+    padding: 6,
+  },
+  text: {
+    fontSize: 16,
   },
 });
 
