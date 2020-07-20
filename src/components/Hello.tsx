@@ -1,13 +1,13 @@
 import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
-  Button,
   View,
   SafeAreaView,
   Text,
   Alert,
   ScrollView,
 } from 'react-native';
+import {TouchableRipple, Button} from 'react-native-paper';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Activity from './Activity';
 
@@ -27,7 +27,7 @@ const Hello: FC<TypeProps> = (props) => {
   } else if (timesPressed > 0) {
     textLog = 'onPress';
   }
-  const startActivity = (event: any) => {
+  const startActivity = () => {
     setTimerStarted(true);
   };
 
@@ -48,7 +48,13 @@ const Hello: FC<TypeProps> = (props) => {
                 The purpose of this app is to practice our daily Morning
                 Revival.
               </Text>
-              <Button title="Start 7 Minutes" onPress={startActivity} />
+              <TouchableRipple
+                onPress={startActivity}
+                rippleColor="rgba(0, 0, 0, .32)">
+                <Button mode="contained" onPress={startActivity}>
+                  Press me
+                </Button>
+              </TouchableRipple>
             </View>
             <Separator />
           </View>

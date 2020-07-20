@@ -1,5 +1,6 @@
 import React, {FC, useState, useEffect} from 'react';
-import {StyleSheet, Button, View, Text, Alert} from 'react-native';
+import {StyleSheet, View, Text, Alert} from 'react-native';
+import {TouchableRipple, Button} from 'react-native-paper';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import StandardTimer from './StandardTimer';
 import {secondsToMinutes} from '../utils/secondsToMinutes';
@@ -58,7 +59,7 @@ const Activity: FC<TypeProps> = (props) => {
     setActivityDescription(CALLING_DESC);
   }; */
 
-  const onClickHome = (event: any) => {
+  const onClickHome = () => {
     props.onClickHome();
   };
 
@@ -151,17 +152,23 @@ const Activity: FC<TypeProps> = (props) => {
       )}
 
       <View>
-        <Button title="Exit 7 Minutes" color="#0390fc" onPress={onClickHome} />
+        <TouchableRipple onPress={onClickHome} rippleColor="rgba(0, 0, 0, .32)">
+          <Button mode="contained" onPress={onClickHome}>
+            Exit 7 Minutes
+          </Button>
+        </TouchableRipple>
       </View>
       {time < 0 && (
         <View>
           <Separator />
           <View>
-            <Button
-              title="Back To Home"
-              color="#0390fc"
+            <TouchableRipple
               onPress={onClickHome}
-            />
+              rippleColor="rgba(0, 0, 0, .32)">
+              <Button mode="contained" onPress={onClickHome}>
+                Back To Home
+              </Button>
+            </TouchableRipple>
           </View>
         </View>
       )}
