@@ -53,10 +53,10 @@ const Hello: FC<TypeProps> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <View style={styles.pickerContainer}>
         {timerStarted === false && (
-          <View>
-            <View>
+          <View style={styles.pickerContainer}>
+            <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedValue}
                 onValueChange={(itemValue, itemIndex) =>
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 16,
@@ -120,9 +121,16 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     textAlign: 'center',
+    width: '100%',
+  },
+  pickerContainerInner: {
+    textAlign: 'center',
+    width: '70%',
   },
   pickerStyle: {
     textAlign: 'center',
+    width: '70%',
+    alignSelf: 'stretch',
   },
   separator: {
     marginVertical: 8,
@@ -135,6 +143,9 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     marginVertical: 8,
+    fontSize: 20,
+    marginTop: 64,
+    marginBottom: 64,
   },
   textStyle: {
     textAlign: 'center',

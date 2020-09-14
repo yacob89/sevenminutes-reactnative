@@ -15,12 +15,12 @@ import cn from '../locale/cn/translate.json';
 import de from '../locale/de/translate.json';
 import en from '../locale/en/translate.json';
 import es from '../locale/es/translate.json';
-import kr from '../locale/es/translate.json';
-import nl from '../locale/es/translate.json';
-import ph from '../locale/es/translate.json';
-import pl from '../locale/es/translate.json';
-import pt from '../locale/es/translate.json';
-import ukr from '../locale/es/translate.json';
+import kr from '../locale/kr/translate.json';
+import nl from '../locale/nl/translate.json';
+import ph from '../locale/ph/translate.json';
+import pl from '../locale/pl/translate.json';
+import pt from '../locale/pt/translate.json';
+import ukr from '../locale/ukr/translate.json';
 
 // Initialize the internationalization library
 i18n.use(initReactI18next).init({
