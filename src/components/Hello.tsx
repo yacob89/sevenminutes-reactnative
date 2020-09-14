@@ -48,7 +48,7 @@ const Hello: FC<TypeProps> = (props) => {
   const onLanguageChange = (itemValue: any) => {
     setSelectedValue(itemValue.toString());
     console.log('Item Value: ', itemValue.toString());
-    changeLanguage('jp');
+    changeLanguage(itemValue.toString());
   };
 
   return (
@@ -64,14 +64,20 @@ const Hello: FC<TypeProps> = (props) => {
                 }
                 style={styles.pickerStyle}>
                 <Picker.Item label="Select Language" value="en" />
-                <Picker.Item label="Japan" value="jp" />
+                <Picker.Item label="中文(繁體)" value="cn" />
+                <Picker.Item label="Deutsch" value="de" />
+                <Picker.Item label="English" value="en" />
+                <Picker.Item label="Español" value="es" />
+                <Picker.Item label="한국어" value="kr" />
+                <Picker.Item label="Nederlands" value="nl" />
+                <Picker.Item label="Wikang Tagalog" value="ph" />
+                <Picker.Item label="polszczyzna" value="pl" />
+                <Picker.Item label="Português" value="pt" />
+                <Picker.Item label="Українська" value="ukr" />
               </Picker>
             </View>
             <View>
-              <Text style={styles.title}>
-                The purpose of this app is to practice our daily Morning
-                Revival. {t('Hello')}
-              </Text>
+              <Text style={styles.title}>{t('Title')}</Text>
               <TouchableRipple
                 onPress={startActivity}
                 rippleColor="rgba(0, 0, 0, .32)">
