@@ -1,4 +1,6 @@
 import React, {FC, useState, useEffect} from 'react';
+import {I18nextProvider, useTranslation} from 'react-i18next';
+import i18 from 'src/utils/i18n';
 import {
   StyleSheet,
   View,
@@ -7,9 +9,11 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+import {Picker} from '@react-native-community/picker';
 import {TouchableRipple, Button} from 'react-native-paper';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Activity from './Activity';
+import {FontAwesome5} from '@expo/vector-icons';
 
 interface TypeProps {
   title: string;
@@ -18,6 +22,12 @@ interface TypeProps {
 const Separator = () => <View style={styles.separator} />;
 
 const Hello: FC<TypeProps> = (props) => {
+  const {t, i18n} = useTranslation();
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
+  const [selectedValue, setSelectedValue] = useState('java');
   const [timerStarted, setTimerStarted] = useState(false);
   const [timesPressed, setTimesPressed] = useState(0);
 
@@ -35,18 +45,32 @@ const Hello: FC<TypeProps> = (props) => {
     setTimerStarted(false);
   };
 
+  const onLanguageChange = (itemValue: any) => {
+    setSelectedValue(itemValue.toString());
+    console.log('Item Value: ', itemValue.toString());
+    changeLanguage('jp');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
         {timerStarted === false && (
           <View>
             <View>
-              <Text style={styles.title}>Select Language</Text>
+              <Picker
+                selectedValue={selectedValue}
+                onValueChange={(itemValue, itemIndex) =>
+                  onLanguageChange(itemValue)
+                }
+                style={styles.pickerStyle}>
+                <Picker.Item label="Select Language" value="en" />
+                <Picker.Item label="Japan" value="jp" />
+              </Picker>
             </View>
             <View>
               <Text style={styles.title}>
                 The purpose of this app is to practice our daily Morning
-                Revival.
+                Revival. {t('Hello')}
               </Text>
               <TouchableRipple
                 onPress={startActivity}
@@ -73,28 +97,38 @@ const Hello: FC<TypeProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    padding: 10,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 16,
     padding: 8,
-  },
-  title: {
     textAlign: 'center',
-    marginVertical: 8,
   },
   fixToText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  pickerContainer: {
+    textAlign: 'center',
+  },
+  pickerStyle: {
+    textAlign: 'center',
   },
   separator: {
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  buttonContainer: {
-    padding: 10,
+  text: {
+    fontSize: 16,
+  },
+  title: {
+    textAlign: 'center',
+    marginVertical: 8,
   },
   textStyle: {
     textAlign: 'center',
@@ -102,9 +136,6 @@ const styles = StyleSheet.create({
   wrapperCustom: {
     borderRadius: 8,
     padding: 6,
-  },
-  text: {
-    fontSize: 16,
   },
 });
 
