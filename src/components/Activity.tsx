@@ -52,8 +52,10 @@ const Activity: FC<TypeProps> = (props) => {
   const {t, i18n} = useTranslation();
 
   const [activityName, setActivityName] = useState('call');
-  const [activityTitle, setActivityTitle] = useState(CALLING_TITLE);
-  const [activityDescription, setActivityDescription] = useState(CALLING_DESC);
+  const [activityTitle, setActivityTitle] = useState(t('Calling'));
+  const [activityDescription, setActivityDescription] = useState(
+    t('CallingText'),
+  );
   const [time, setTime] = useState(5);
 
   /* const resetTimer = (event: any) => {
@@ -63,9 +65,9 @@ const Activity: FC<TypeProps> = (props) => {
     setActivityDescription(CALLING_DESC);
   }; */
 
-  const changeLanguage = (lng: string) => {
+  /* const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
-  };
+  }; */
 
   const onClickHome = () => {
     props.onClickHome();
@@ -84,38 +86,38 @@ const Activity: FC<TypeProps> = (props) => {
           switch (activityName) {
             case 'call':
               setActivityName('pray');
-              setActivityTitle(PRAYING_TITLE);
-              setActivityDescription(PRAYING_DESC);
+              setActivityTitle(t('Praying'));
+              setActivityDescription(t('PrayingText'));
               setTime(5);
               break;
             case 'pray':
               setActivityName('prayread');
-              setActivityTitle(PRAY_READING_TITLE);
-              setActivityDescription(PRAY_READING_DESC);
+              setActivityTitle(t('PrayReading'));
+              setActivityDescription(t('PrayReadingText'));
               setTime(6);
               break;
             case 'prayread':
               setActivityName('confession');
-              setActivityTitle(CONFESSION_TITLE);
-              setActivityDescription(CONFESSION_DESC);
+              setActivityTitle(t('Confession'));
+              setActivityDescription(t('ConfessionText'));
               setTime(7);
               break;
             case 'confession':
               setActivityName('consecration');
-              setActivityTitle(CONSECRATION_TITLE);
-              setActivityDescription(CONSECRATION_DESC);
+              setActivityTitle(t('Consecration'));
+              setActivityDescription(t('ConsecrationText'));
               setTime(8);
               break;
             case 'consecration':
               setActivityName('thanksgiving');
-              setActivityTitle(THANKSGIVING_TITLE);
-              setActivityDescription(THANKSGIVING_DESC);
+              setActivityTitle(t('Thanksgiving'));
+              setActivityDescription(t('ThanksgivingText'));
               setTime(9);
               break;
             case 'thanksgiving':
               setActivityName('petition');
-              setActivityTitle(PETITION_TITLE);
-              setActivityDescription(PETITION_DESC);
+              setActivityTitle(t('Petition'));
+              setActivityDescription(t('PetitionText'));
               setTime(10);
               break;
             case 'petititon':
@@ -153,7 +155,7 @@ const Activity: FC<TypeProps> = (props) => {
       {time < 0 && (
         <View>
           <View>
-            <Text style={styles.praiseTheLordTextStyle}>Praise The Lord</Text>
+            <Text style={styles.praiseTheLordTextStyle}>{t('Hallelujah')}</Text>
           </View>
           <Separator />
         </View>
@@ -162,7 +164,7 @@ const Activity: FC<TypeProps> = (props) => {
       <View>
         <TouchableRipple onPress={onClickHome} rippleColor="rgba(0, 0, 0, .32)">
           <Button mode="contained" onPress={onClickHome}>
-            Exit 7 Minutes
+            {t('End')}
           </Button>
         </TouchableRipple>
       </View>
