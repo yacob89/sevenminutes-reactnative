@@ -8,6 +8,9 @@ import {
   Text,
   Alert,
   ScrollView,
+  Image,
+  ImageBackground,
+  GestureResponderEvent,
 } from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {TouchableRipple, Button} from 'react-native-paper';
@@ -30,6 +33,20 @@ const Hello: FC<TypeProps> = (props) => {
   const [selectedValue, setSelectedValue] = useState('java');
   const [timerStarted, setTimerStarted] = useState(false);
   const [timesPressed, setTimesPressed] = useState(0);
+  const [activityLanguage, setActivityLanguage] = useState('en');
+
+  const languages = [
+    {value: 'cn', title: '七分鐘與主同在'},
+    {value: 'de', title: 'Sieben Minuten mit dem Herrn'},
+    {value: 'en', title: '7 Minutes With The Lord'},
+    {value: 'es', title: '7 Minutos con el Señor'},
+    {value: 'kr', title: '주님과 함께 7분을'},
+    {value: 'nl', title: '7 minuten met de Heer'},
+    {value: 'ph', title: '7 Minutong Kasama ng Panginoon'},
+    {value: 'pl', title: 'Siedem minut z Panem'},
+    {value: 'pt', title: '7 minutos com o Senhor'},
+    {value: 'ukr', title: 'Сім хвилин з Господом'},
+  ];
 
   let textLog = '';
   if (timesPressed > 1) {
@@ -37,7 +54,11 @@ const Hello: FC<TypeProps> = (props) => {
   } else if (timesPressed > 0) {
     textLog = 'onPress';
   }
-  const startActivity = () => {
+
+  const startActivity = (event: string) => {
+    console.log('Key: ', event);
+    changeLanguage(event);
+    setActivityLanguage(event);
     setTimerStarted(true);
   };
 
@@ -45,53 +66,30 @@ const Hello: FC<TypeProps> = (props) => {
     setTimerStarted(false);
   };
 
-  const onLanguageChange = (itemValue: any) => {
-    setSelectedValue(itemValue.toString());
-    console.log('Item Value: ', itemValue.toString());
-    changeLanguage(itemValue.toString());
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.pickerContainer}>
         {timerStarted === false && (
           <View style={styles.pickerContainer}>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={selectedValue}
-                onValueChange={(itemValue, itemIndex) =>
-                  onLanguageChange(itemValue)
-                }
-                style={styles.pickerStyle}>
-                <Picker.Item label="Select Language" value="en" />
-                <Picker.Item label="中文(繁體)" value="cn" />
-                <Picker.Item label="Deutsch" value="de" />
-                <Picker.Item label="English" value="en" />
-                <Picker.Item label="Español" value="es" />
-                <Picker.Item label="한국어" value="kr" />
-                <Picker.Item label="Nederlands" value="nl" />
-                <Picker.Item label="Wikang Tagalog" value="ph" />
-                <Picker.Item label="polszczyzna" value="pl" />
-                <Picker.Item label="Português" value="pt" />
-                <Picker.Item label="Українська" value="ukr" />
-              </Picker>
-            </View>
-            <View>
-              <Text style={styles.title}>{t('Title')}</Text>
-              <TouchableRipple
-                onPress={startActivity}
-                rippleColor="rgba(0, 0, 0, .32)">
-                <Button mode="contained" onPress={startActivity}>
-                  Press me
-                </Button>
-              </TouchableRipple>
-            </View>
-            <Separator />
+            <ScrollView style={styles.scrollView}>
+              {languages.map((language) => {
+                return (
+                  <Button
+                    key={language.value}
+                    mode="contained"
+                    style={styles.buttonLanguage}
+                    onPress={() => startActivity(language.value)}>
+                    {language.title}
+                  </Button>
+                );
+              })}
+            </ScrollView>
           </View>
         )}
 
         {timerStarted === true && (
           <Activity
+            language={activityLanguage}
             timerRunning={timerStarted}
             activityName={'call'}
             onClickHome={onClickHome}
@@ -106,6 +104,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: 10,
   },
+  buttonLanguage: {
+    marginBottom: 2,
+  },
   container: {
     flex: 1,
     alignSelf: 'stretch',
@@ -118,6 +119,10 @@ const styles = StyleSheet.create({
   fixToText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  flagStyle: {
+    width: '100%',
+    height: 64,
   },
   pickerContainer: {
     textAlign: 'center',
@@ -132,6 +137,10 @@ const styles = StyleSheet.create({
     width: '70%',
     alignSelf: 'stretch',
   },
+  scrollView: {
+    marginHorizontal: 2,
+    height: '90%',
+  },
   separator: {
     marginVertical: 8,
     borderBottomColor: '#737373',
@@ -144,8 +153,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 8,
     fontSize: 20,
-    marginTop: 64,
-    marginBottom: 64,
+    marginTop: 8,
+    marginBottom: 8,
   },
   textStyle: {
     textAlign: 'center',

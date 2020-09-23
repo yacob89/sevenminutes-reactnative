@@ -1,4 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
+import {I18nextProvider, useTranslation} from 'react-i18next';
 import {StyleSheet, View, Text, Alert} from 'react-native';
 import {TouchableRipple, Button} from 'react-native-paper';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -24,6 +25,7 @@ import {
 } from '../utils/constants';
 
 interface TypeProps {
+  language: string;
   title?: string; // Epoch number start time
   description?: string;
   activityName?: string;
@@ -47,6 +49,8 @@ interface TypeProps {
 const Separator = () => <View style={styles.separator} />;
 
 const Activity: FC<TypeProps> = (props) => {
+  const {t, i18n} = useTranslation();
+
   const [activityName, setActivityName] = useState('call');
   const [activityTitle, setActivityTitle] = useState(CALLING_TITLE);
   const [activityDescription, setActivityDescription] = useState(CALLING_DESC);
@@ -58,6 +62,10 @@ const Activity: FC<TypeProps> = (props) => {
     setActivityTitle(CALLING_TITLE);
     setActivityDescription(CALLING_DESC);
   }; */
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   const onClickHome = () => {
     props.onClickHome();
