@@ -1,28 +1,10 @@
 import React, {FC, useState, useEffect} from 'react';
 import {I18nextProvider, useTranslation} from 'react-i18next';
-import {StyleSheet, View, Text, Alert} from 'react-native';
+import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
 import {TouchableRipple, Button} from 'react-native-paper';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import StandardTimer from './StandardTimer';
 import {secondsToMinutes} from '../utils/secondsToMinutes';
-import {
-  CALLING_TITLE,
-  PRAYING_TITLE,
-  PRAY_READING_TITLE,
-  CONFESSION_TITLE,
-  CONSECRATION_TITLE,
-  THANKSGIVING_TITLE,
-  PETITION_TITLE,
-} from '../utils/constants';
-import {
-  CALLING_DESC,
-  PRAYING_DESC,
-  PRAY_READING_DESC,
-  CONFESSION_DESC,
-  CONSECRATION_DESC,
-  THANKSGIVING_DESC,
-  PETITION_DESC,
-} from '../utils/constants';
 
 interface TypeProps {
   language: string;
@@ -45,8 +27,6 @@ interface TypeProps {
   petitionTimerTime?: number;
   onClickHome: () => void; // call this on click of the dark tick button, passing the id
 }
-
-const Separator = () => <View style={styles.separator} />;
 
 const Activity: FC<TypeProps> = (props) => {
   const {t, i18n} = useTranslation();
@@ -137,48 +117,36 @@ const Activity: FC<TypeProps> = (props) => {
 
   return (
     <View>
-      <Separator />
-      <View>
+      <View style={styles.viewWithMargin}>
         <Text style={styles.titleTextStyle}>{activityTitle}</Text>
       </View>
-      <Separator />
-      <View>
+      <View style={styles.viewWithMargin}>
         <Text style={styles.descriptionTextStyle}>{activityDescription}</Text>
       </View>
-      <Separator />
       <View>
         <Text style={styles.timerTextStyle}>
           {time < 0 ? '00:00' : secondsToMinutes(time)}
         </Text>
       </View>
-      <Separator />
       {time < 0 && (
         <View>
           <View>
             <Text style={styles.praiseTheLordTextStyle}>{t('Hallelujah')}</Text>
           </View>
-          <Separator />
         </View>
       )}
 
-      <View>
-        <TouchableRipple onPress={onClickHome} rippleColor="rgba(0, 0, 0, .32)">
-          <Button mode="contained" onPress={onClickHome}>
-            {t('End')}
-          </Button>
-        </TouchableRipple>
+      <View style={styles.viewWithMargin}>
+        <TouchableOpacity style={styles.buttonHome} onPress={onClickHome}>
+          <Text>{t('End')}</Text>
+        </TouchableOpacity>
       </View>
       {time < 0 && (
         <View>
-          <Separator />
           <View>
-            <TouchableRipple
-              onPress={onClickHome}
-              rippleColor="rgba(0, 0, 0, .32)">
-              <Button mode="contained" onPress={onClickHome}>
-                Back To Home
-              </Button>
-            </TouchableRipple>
+            <TouchableOpacity style={styles.buttonHome} onPress={onClickHome}>
+              <Text>Back To Home</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -187,6 +155,16 @@ const Activity: FC<TypeProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+  buttonHome: {
+    marginBottom: 4,
+    height: 50,
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontSize: 16,
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    borderRadius: 15,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -226,6 +204,9 @@ const styles = StyleSheet.create({
   praiseTheLordTextStyle: {
     textAlign: 'center',
     fontSize: 36,
+  },
+  viewWithMargin: {
+    marginVertical: 8,
   },
 });
 

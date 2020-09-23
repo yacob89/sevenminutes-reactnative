@@ -10,7 +10,7 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  GestureResponderEvent,
+  TouchableOpacity,
 } from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {TouchableRipple, Button} from 'react-native-paper';
@@ -30,7 +30,6 @@ const Hello: FC<TypeProps> = (props) => {
     i18n.changeLanguage(lng);
   };
 
-  const [selectedValue, setSelectedValue] = useState('java');
   const [timerStarted, setTimerStarted] = useState(false);
   const [timesPressed, setTimesPressed] = useState(0);
   const [activityLanguage, setActivityLanguage] = useState('en');
@@ -74,13 +73,12 @@ const Hello: FC<TypeProps> = (props) => {
             <ScrollView style={styles.scrollView}>
               {languages.map((language) => {
                 return (
-                  <Button
+                  <TouchableOpacity
                     key={language.value}
-                    mode="contained"
                     style={styles.buttonLanguage}
                     onPress={() => startActivity(language.value)}>
-                    {language.title}
-                  </Button>
+                    <Text>{language.title}</Text>
+                  </TouchableOpacity>
                 );
               })}
             </ScrollView>
@@ -105,8 +103,16 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonLanguage: {
-    marginBottom: 2,
+    marginBottom: 4,
+    height: 50,
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontSize: 16,
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    borderRadius: 15,
   },
+  textLanguage: {},
   container: {
     flex: 1,
     alignSelf: 'stretch',
