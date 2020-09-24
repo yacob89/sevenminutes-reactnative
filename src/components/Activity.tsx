@@ -1,10 +1,8 @@
 import React, {FC, useState, useEffect} from 'react';
-import {I18nextProvider, useTranslation} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
-import {TouchableRipple, Button} from 'react-native-paper';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import StandardTimer from './StandardTimer';
 import {secondsToMinutes} from '../utils/secondsToMinutes';
+import {Audio} from 'expo-av';
 
 interface TypeProps {
   language: string;
@@ -30,6 +28,7 @@ interface TypeProps {
 
 const Activity: FC<TypeProps> = (props) => {
   const {t, i18n} = useTranslation();
+  const soundObject = new Audio.Sound();
 
   const [activityName, setActivityName] = useState('call');
   const [activityTitle, setActivityTitle] = useState(t('Calling'));
@@ -38,16 +37,18 @@ const Activity: FC<TypeProps> = (props) => {
   );
   const [time, setTime] = useState(5);
 
-  /* const resetTimer = (event: any) => {
-    setTime(5);
-    setActivityName('call');
-    setActivityTitle(CALLING_TITLE);
-    setActivityDescription(CALLING_DESC);
-  }; */
-
-  /* const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  }; */
+  const playAudio = async () => {
+    try {
+      const {sound: soundObject, status} = await Audio.Sound.createAsync(
+        require('./assets/sounds/sirius_mp3.mp3'),
+        {
+          shouldPlay: true,
+        },
+      );
+    } catch (error) {
+      // An error occurred!
+    }
+  };
 
   const onClickHome = () => {
     props.onClickHome();
@@ -63,6 +64,7 @@ const Activity: FC<TypeProps> = (props) => {
       const intervalId = setInterval(() => {
         setTime(time - 1);
         if (time === 0) {
+          playAudio();
           switch (activityName) {
             case 'call':
               setActivityName('pray');

@@ -1,28 +1,18 @@
-import React, {FC, useState, useEffect} from 'react';
-import {I18nextProvider, useTranslation} from 'react-i18next';
-import i18 from 'src/utils/i18n';
+import React, {FC, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   StyleSheet,
   View,
   SafeAreaView,
   Text,
-  Alert,
   ScrollView,
-  Image,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import {Picker} from '@react-native-community/picker';
-import {TouchableRipple, Button} from 'react-native-paper';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Activity from './Activity';
-import {FontAwesome5} from '@expo/vector-icons';
 
 interface TypeProps {
   title: string;
 }
-
-const Separator = () => <View style={styles.separator} />;
 
 const Hello: FC<TypeProps> = (props) => {
   const {t, i18n} = useTranslation();
@@ -55,7 +45,6 @@ const Hello: FC<TypeProps> = (props) => {
   }
 
   const startActivity = (event: string) => {
-    console.log('Key: ', event);
     changeLanguage(event);
     setActivityLanguage(event);
     setTimerStarted(true);
