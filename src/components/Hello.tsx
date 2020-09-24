@@ -1,4 +1,5 @@
 import React, {FC, useState} from 'react';
+import {useKeepAwake} from 'expo-keep-awake';
 import {useTranslation} from 'react-i18next';
 import {
   StyleSheet,
@@ -15,6 +16,7 @@ interface TypeProps {
 }
 
 const Hello: FC<TypeProps> = (props) => {
+  useKeepAwake();
   const {t, i18n} = useTranslation();
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);

@@ -1,4 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
+import {useKeepAwake} from 'expo-keep-awake';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
 import {secondsToMinutes} from '../utils/secondsToMinutes';
@@ -27,6 +28,7 @@ interface TypeProps {
 }
 
 const Activity: FC<TypeProps> = (props) => {
+  useKeepAwake();
   const {t, i18n} = useTranslation();
   const soundObject = new Audio.Sound();
 

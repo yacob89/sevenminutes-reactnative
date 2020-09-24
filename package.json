@@ -23,6 +23,7 @@
     "expo-av": "^8.6.0",
     "expo-constants": "^9.1.1",
     "expo-font": "^8.2.1",
+    "expo-keep-awake": "^8.3.0",
     "i18next": "^19.7.0",
     "react": "16.13.1",
     "react-i18next": "^11.7.2",
