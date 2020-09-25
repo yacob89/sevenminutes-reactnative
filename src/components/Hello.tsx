@@ -1,5 +1,4 @@
 import React, {FC, useState} from 'react';
-import RNRestart from 'react-native-restart';
 import {useKeepAwake} from 'expo-keep-awake';
 import {useTranslation} from 'react-i18next';
 import {
