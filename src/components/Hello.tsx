@@ -1,4 +1,5 @@
 import React, {FC, useState} from 'react';
+import RNRestart from 'react-native-restart';
 import {useKeepAwake} from 'expo-keep-awake';
 import {useTranslation} from 'react-i18next';
 import {
@@ -8,6 +9,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  I18nManager,
 } from 'react-native';
 import Activity from './Activity';
 
@@ -19,6 +21,19 @@ const Hello: FC<TypeProps> = (props) => {
   useKeepAwake();
   const {t, i18n} = useTranslation();
   const changeLanguage = (lng: string) => {
+    if (lng === 'ara') {
+      if (!I18nManager.isRTL) {
+        I18nManager.forceRTL(true);
+      } else {
+        I18nManager.forceRTL(false);
+      }
+    } else {
+      if (I18nManager.isRTL) {
+        I18nManager.forceRTL(false);
+      } else {
+        I18nManager.forceRTL(true);
+      }
+    }
     i18n.changeLanguage(lng);
   };
 
@@ -27,15 +42,19 @@ const Hello: FC<TypeProps> = (props) => {
   const [activityLanguage, setActivityLanguage] = useState('en');
 
   const languages = [
+    {value: 'ara', title: '٧ دقائق مع الرب '},
     {value: 'cn', title: '七分鐘與主同在'},
     {value: 'de', title: 'Sieben Minuten mit dem Herrn'},
     {value: 'en', title: '7 Minutes With The Lord'},
     {value: 'es', title: '7 Minutos con el Señor'},
+    {value: 'ind', title: '7 Menit Bersama Tuhan'},
+    {value: 'kat', title: '7 წუთი უფალთან'},
     {value: 'kr', title: '주님과 함께 7분을'},
     {value: 'nl', title: '7 minuten met de Heer'},
     {value: 'ph', title: '7 Minutong Kasama ng Panginoon'},
     {value: 'pl', title: 'Siedem minut z Panem'},
     {value: 'pt', title: '7 minutos com o Senhor'},
+    {value: 'rus', title: 'Семь минут с Господом'},
     {value: 'ukr', title: 'Сім хвилин з Господом'},
   ];
 
