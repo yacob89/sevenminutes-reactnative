@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   buttonLanguage: {
     marginBottom: 4,
-    height: 50,
+    height: 48,
     textAlign: 'center',
     justifyContent: 'center',
     fontSize: 16,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 2,
-    height: '90%',
+    height: '100%',
   },
   separator: {
     marginVertical: 8,
