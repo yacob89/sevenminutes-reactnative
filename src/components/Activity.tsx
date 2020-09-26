@@ -37,7 +37,7 @@ const Activity: FC<TypeProps> = (props) => {
   const [activityDescription, setActivityDescription] = useState(
     t('CallingText'),
   );
-  const [time, setTime] = useState(5);
+  const [time, setTime] = useState(30);
 
   const playAudio = async () => {
     try {
@@ -72,37 +72,37 @@ const Activity: FC<TypeProps> = (props) => {
               setActivityName('pray');
               setActivityTitle(t('Praying'));
               setActivityDescription(t('PrayingText'));
-              setTime(5);
+              setTime(60);
               break;
             case 'pray':
               setActivityName('prayread');
               setActivityTitle(t('PrayReading'));
               setActivityDescription(t('PrayReadingText'));
-              setTime(6);
+              setTime(150);
               break;
             case 'prayread':
               setActivityName('confession');
               setActivityTitle(t('Confession'));
               setActivityDescription(t('ConfessionText'));
-              setTime(7);
+              setTime(60);
               break;
             case 'confession':
               setActivityName('consecration');
               setActivityTitle(t('Consecration'));
               setActivityDescription(t('ConsecrationText'));
-              setTime(8);
+              setTime(30);
               break;
             case 'consecration':
               setActivityName('thanksgiving');
               setActivityTitle(t('Thanksgiving'));
               setActivityDescription(t('ThanksgivingText'));
-              setTime(9);
+              setTime(30);
               break;
             case 'thanksgiving':
               setActivityName('petition');
               setActivityTitle(t('Petition'));
               setActivityDescription(t('PetitionText'));
-              setTime(10);
+              setTime(60);
               break;
             case 'petititon':
               setActivityName('end');
