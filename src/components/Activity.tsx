@@ -1,4 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
+import BackgroundTimer from 'react-native-background-timer';
 import {useKeepAwake} from 'expo-keep-awake';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
@@ -40,6 +41,16 @@ const Activity: FC<TypeProps> = (props) => {
   const [time, setTime] = useState(30);
 
   const playAudio = async () => {
+    console.log('Play Audio');
+    await Audio.setAudioModeAsync({
+      staysActiveInBackground: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+      shouldDuckAndroid: true,
+      playThroughEarpieceAndroid: true,
+      allowsRecordingIOS: true,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+    });
     try {
       const {sound: soundObject, status} = await Audio.Sound.createAsync(
         require('./assets/sounds/sirius_mp3.mp3'),
@@ -58,12 +69,15 @@ const Activity: FC<TypeProps> = (props) => {
 
   useEffect(() => {
     if (props.timerRunning) {
+      BackgroundTimer.stopBackgroundTimer(); //after this call all code on background stop run.
       if (time < 0) {
         return;
       }
       // save intervalId to clear the interval when the
       // component re-renders
-      const intervalId = setInterval(() => {
+      // Start a timer that runs continuous after X milliseconds
+      const intervalId = BackgroundTimer.setInterval(() => {
+        //code that will be called every 3 seconds
         setTime(time - 1);
         if (time === 0) {
           playAudio();
@@ -113,11 +127,14 @@ const Activity: FC<TypeProps> = (props) => {
       }, 1000);
 
       // clear interval on re-render to avoid memory leaks
-      return () => clearInterval(intervalId);
+      //return () => clearInterval(intervalId);
+      return () => BackgroundTimer.clearInterval(intervalId); //after this call all code on background stop run.
       // add timeLeft as a dependency to re-rerun the effect
       // when we update it
     }
   }, [props.timerRunning, time]);
+
+  const startTimer = () => {};
 
   return (
     <View>

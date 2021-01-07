@@ -1,4 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
+import BackgroundTimer from 'react-native-background-timer';
 import {StyleSheet, Text} from 'react-native';
 import {secondsToMinutes} from 'src/utils/secondsToMinutes';
 
@@ -16,13 +17,19 @@ const StandardTimer: FC<TypeProps> = (props) => {
     if (props.timerRunning) {
       // save intervalId to clear the interval when the
       // component re-renders
-      const intervalId = setInterval(() => {
+      BackgroundTimer.runBackgroundTimer(() => {
+        //code that will be called every 3 seconds
         setTime(time + 1);
         setTimeDifference(time - props.timerTimeFrom);
       }, 1000);
+      /* const intervalId = setInterval(() => {
+        setTime(time + 1);
+        setTimeDifference(time - props.timerTimeFrom);
+      }, 1000); */
 
       // clear interval on re-render to avoid memory leaks
-      return () => clearInterval(intervalId);
+      //return () => clearInterval(intervalId);
+      return () => BackgroundTimer.stopBackgroundTimer(); //after this call all code on background stop run.
       // add timeLeft as a dependency to re-rerun the effect
       // when we update it
     }
