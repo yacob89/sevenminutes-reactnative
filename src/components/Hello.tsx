@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {useKeepAwake} from 'expo-keep-awake';
 import {useTranslation} from 'react-i18next';
 import {
@@ -9,6 +9,8 @@ import {
   ScrollView,
   TouchableOpacity,
   I18nManager,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import Activity from './Activity';
 
@@ -39,6 +41,38 @@ const Hello: FC<TypeProps> = (props) => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [timesPressed, setTimesPressed] = useState(0);
   const [activityLanguage, setActivityLanguage] = useState('en');
+
+  useEffect(() => {
+    const backAction = () => {
+      if (!timerStarted) {
+        Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+          {
+            text: 'NO',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {text: 'YES', onPress: () => BackHandler.exitApp()},
+        ]);
+      } else {
+        Alert.alert('Warning', t('ExitWarning'), [
+          {
+            text: 'NO',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {text: 'YES', onPress: () => setTimerStarted(false)},
+        ]);
+      }
+
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [timerStarted]);
 
   const languages = [
     {value: 'ara', title: '٧ دقائق مع الرب '},
