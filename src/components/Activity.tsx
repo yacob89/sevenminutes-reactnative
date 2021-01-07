@@ -39,6 +39,7 @@ const Activity: FC<TypeProps> = (props) => {
     t('CallingText'),
   );
   const [time, setTime] = useState(30);
+  const [timerRunning, setTimerRunning] = useState(props.timerRunning);
 
   const playAudio = async () => {
     console.log('Play Audio');
@@ -67,8 +68,19 @@ const Activity: FC<TypeProps> = (props) => {
     props.onClickHome();
   };
 
+  const onClickPause = () => {
+    console.log('Pause');
+    if (timerRunning) {
+      setTimerRunning(false);
+      BackgroundTimer.stopBackgroundTimer();
+    } else {
+      setTimerRunning(true);
+      BackgroundTimer.start();
+    }
+  };
+
   useEffect(() => {
-    if (props.timerRunning) {
+    if (timerRunning) {
       BackgroundTimer.stopBackgroundTimer(); //after this call all code on background stop run.
       if (time < 0) {
         return;
@@ -132,7 +144,7 @@ const Activity: FC<TypeProps> = (props) => {
       // add timeLeft as a dependency to re-rerun the effect
       // when we update it
     }
-  }, [props.timerRunning, time]);
+  }, [props.timerRunning, time, timerRunning]);
 
   const startTimer = () => {};
 
@@ -158,6 +170,9 @@ const Activity: FC<TypeProps> = (props) => {
       )}
 
       <View style={styles.viewWithMargin}>
+        <TouchableOpacity style={styles.buttonHome} onPress={onClickPause}>
+          <Text>Pause</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.buttonHome} onPress={onClickHome}>
           <Text>{t('End')}</Text>
         </TouchableOpacity>
