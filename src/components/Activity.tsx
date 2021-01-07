@@ -226,7 +226,7 @@ const Activity: FC<TypeProps> = (props) => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.controlButtons} onPress={onClickPause}>
           {!timerRunning && <Feather name="play" size={24} color="black" />}
-          {timerRunning && <AntDesign name="pause" size={24} color="black" />}
+          {timerRunning && <Feather name="pause" size={24} color="black" />}
         </TouchableOpacity>
         <TouchableOpacity style={styles.controlButtons} onPress={onClickHome}>
           <Text>{t('End')}</Text>
