@@ -7,6 +7,15 @@ import {secondsToMinutes} from '../utils/secondsToMinutes';
 import {Audio} from 'expo-av';
 import {AntDesign} from '@expo/vector-icons';
 import {Feather} from '@expo/vector-icons';
+import {
+  CALLING_TIME,
+  PRAYING_TIME,
+  PRAY_READING_TIME,
+  CONSECRATION_TIME,
+  CONFESSION_TIME,
+  THANKSGIVING_TIME,
+  PETITION_TIME,
+} from '../utils/constants';
 
 interface TypeProps {
   language: string;
@@ -81,52 +90,100 @@ const Activity: FC<TypeProps> = (props) => {
   };
 
   const onClickBack = () => {
-    console.log('Backk');
     switch (activityName) {
       case 'call':
-        props.onClickHome();
+        if (time > CALLING_TIME - 2) {
+          props.onClickHome();
+        } else {
+          setActivityName('call');
+          setActivityTitle(t('Calling'));
+          setActivityDescription(t('CallingText'));
+          setTime(CALLING_TIME);
+        }
         break;
       case 'pray':
-        setActivityName('call');
-        setActivityTitle(t('Calling'));
-        setActivityDescription(t('CallingText'));
-        setTime(30);
+        if (time > PRAYING_TIME - 2) {
+          setActivityName('call');
+          setActivityTitle(t('Calling'));
+          setActivityDescription(t('CallingText'));
+          setTime(CALLING_TIME);
+        } else {
+          setActivityName('pray');
+          setActivityTitle(t('Praying'));
+          setActivityDescription(t('PrayingText'));
+          setTime(PRAYING_TIME);
+        }
         break;
       case 'prayread':
-        setActivityName('pray');
-        setActivityTitle(t('Praying'));
-        setActivityDescription(t('PrayingText'));
-        setTime(60);
+        if (time > PRAY_READING_TIME - 2) {
+          setActivityName('pray');
+          setActivityTitle(t('Praying'));
+          setActivityDescription(t('PrayingText'));
+          setTime(PRAYING_TIME);
+        } else {
+          setActivityName('prayread');
+          setActivityTitle(t('PrayReading'));
+          setActivityDescription(t('PrayReadingText'));
+          setTime(PRAY_READING_TIME);
+        }
         break;
       case 'confession':
-        setActivityName('prayread');
-        setActivityTitle(t('PrayReading'));
-        setActivityDescription(t('PrayReadingText'));
-        setTime(150);
+        if (time > CONFESSION_TIME - 2) {
+          setActivityName('prayread');
+          setActivityTitle(t('PrayReading'));
+          setActivityDescription(t('PrayReadingText'));
+          setTime(PRAY_READING_TIME);
+        } else {
+          setActivityName('confession');
+          setActivityTitle(t('Confession'));
+          setActivityDescription(t('ConfessionText'));
+          setTime(CONFESSION_TIME);
+        }
         break;
       case 'consecration':
-        setActivityName('confession');
-        setActivityTitle(t('Confession'));
-        setActivityDescription(t('ConfessionText'));
-        setTime(60);
+        if (time > CONSECRATION_TIME - 2) {
+          setActivityName('confession');
+          setActivityTitle(t('Confession'));
+          setActivityDescription(t('ConfessionText'));
+          setTime(CONFESSION_TIME);
+        } else {
+          setActivityName('consecration');
+          setActivityTitle(t('Consecration'));
+          setActivityDescription(t('ConsecrationText'));
+          setTime(CONSECRATION_TIME);
+        }
         break;
       case 'thanksgiving':
-        setActivityName('consecration');
-        setActivityTitle(t('Consecration'));
-        setActivityDescription(t('ConsecrationText'));
-        setTime(30);
+        if (time > THANKSGIVING_TIME - 2) {
+          setActivityName('consecration');
+          setActivityTitle(t('Consecration'));
+          setActivityDescription(t('ConsecrationText'));
+          setTime(CONSECRATION_TIME);
+        } else {
+          setActivityName('thanksgiving');
+          setActivityTitle(t('Thanksgiving'));
+          setActivityDescription(t('ThanksgivingText'));
+          setTime(THANKSGIVING_TIME);
+        }
         break;
       case 'petititon':
-        setActivityName('thanksgiving');
-        setActivityTitle(t('Thanksgiving'));
-        setActivityDescription(t('ThanksgivingText'));
-        setTime(30);
+        if (time > PETITION_TIME - 2) {
+          setActivityName('thanksgiving');
+          setActivityTitle(t('Thanksgiving'));
+          setActivityDescription(t('ThanksgivingText'));
+          setTime(30);
+        } else {
+          setActivityName('petition');
+          setActivityTitle(t('Petition'));
+          setActivityDescription(t('PetitionText'));
+          setTime(PETITION_TIME);
+        }
         break;
       case 'end':
         setActivityName('petition');
         setActivityTitle(t('Petition'));
         setActivityDescription(t('PetitionText'));
-        setTime(60);
+        setTime(PETITION_TIME);
         break;
     }
   };

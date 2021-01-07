@@ -20,3 +20,11 @@ export const THANKSGIVING_DESC =
   'Giving thanks for all things; for all the persons, situations and things in your life and praising Him – Eph. 5:20; 1 Thes. 5:18 (1/2 Minute)';
 export const PETITION_DESC =
   'Asking the Lord for needs, growth and persons that need salvation – 1 Tim. 2:1: Eph. 6:18; Matt. 7:7; Psa. 143:8 (1 Minute)';
+
+export const CALLING_TIME = 30;
+export const PRAYING_TIME = 60;
+export const PRAY_READING_TIME = 150;
+export const CONFESSION_TIME = 60;
+export const CONSECRATION_TIME = 30;
+export const THANKSGIVING_TIME = 30;
+export const PETITION_TIME = 60;
