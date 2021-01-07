@@ -29,11 +29,12 @@ const Hello: FC<TypeProps> = (props) => {
         I18nManager.forceRTL(false);
       }
     } else {
-      if (I18nManager.isRTL) {
+      /* if (I18nManager.isRTL) {
         I18nManager.forceRTL(false);
       } else {
         I18nManager.forceRTL(true);
-      }
+      } */
+      I18nManager.forceRTL(false);
     }
     i18n.changeLanguage(lng);
   };
