@@ -34,6 +34,7 @@ const Hello: FC<TypeProps> = (props) => {
       } else {
         I18nManager.forceRTL(true);
       } */
+      /* ForceRTL(true) will cause flexDirection row order messed up? Then set false for now when LTR language */
       I18nManager.forceRTL(false);
     }
     i18n.changeLanguage(lng);

@@ -90,6 +90,7 @@ const Activity: FC<TypeProps> = (props) => {
   };
 
   const onClickBack = () => {
+    /* TODO: Need to find better solution for back button behaviour */
     switch (activityName) {
       case 'call':
         if (time > CALLING_TIME - 2) {
@@ -207,37 +208,37 @@ const Activity: FC<TypeProps> = (props) => {
               setActivityName('pray');
               setActivityTitle(t('Praying'));
               setActivityDescription(t('PrayingText'));
-              setTime(60);
+              setTime(PRAYING_TIME);
               break;
             case 'pray':
               setActivityName('prayread');
               setActivityTitle(t('PrayReading'));
               setActivityDescription(t('PrayReadingText'));
-              setTime(150);
+              setTime(PRAY_READING_TIME);
               break;
             case 'prayread':
               setActivityName('confession');
               setActivityTitle(t('Confession'));
               setActivityDescription(t('ConfessionText'));
-              setTime(60);
+              setTime(CONFESSION_TIME);
               break;
             case 'confession':
               setActivityName('consecration');
               setActivityTitle(t('Consecration'));
               setActivityDescription(t('ConsecrationText'));
-              setTime(30);
+              setTime(CONSECRATION_TIME);
               break;
             case 'consecration':
               setActivityName('thanksgiving');
               setActivityTitle(t('Thanksgiving'));
               setActivityDescription(t('ThanksgivingText'));
-              setTime(30);
+              setTime(THANKSGIVING_TIME);
               break;
             case 'thanksgiving':
               setActivityName('petition');
               setActivityTitle(t('Petition'));
               setActivityDescription(t('PetitionText'));
-              setTime(60);
+              setTime(PETITION_TIME);
               break;
             case 'petititon':
               setActivityName('end');
