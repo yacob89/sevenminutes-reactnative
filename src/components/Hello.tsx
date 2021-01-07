@@ -56,11 +56,11 @@ const Hello: FC<TypeProps> = (props) => {
       } else {
         Alert.alert('Warning', t('ExitWarning'), [
           {
-            text: 'NO',
+            text: 'RESUME',
             onPress: () => {},
             style: 'cancel',
           },
-          {text: 'YES', onPress: () => setTimerStarted(false)},
+          {text: 'EXIT ANYWAY', onPress: () => setTimerStarted(false)},
         ]);
       }
 
@@ -105,7 +105,14 @@ const Hello: FC<TypeProps> = (props) => {
   };
 
   const onClickHome = () => {
-    setTimerStarted(false);
+    Alert.alert('Warning', t('ExitWarning'), [
+      {
+        text: 'RESUME',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {text: 'EXIT ANYWAY', onPress: () => setTimerStarted(false)},
+    ]);
   };
 
   return (

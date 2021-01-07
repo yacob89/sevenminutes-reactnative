@@ -5,6 +5,8 @@ import {useTranslation} from 'react-i18next';
 import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
 import {secondsToMinutes} from '../utils/secondsToMinutes';
 import {Audio} from 'expo-av';
+import {AntDesign} from '@expo/vector-icons';
+import {Feather} from '@expo/vector-icons';
 
 interface TypeProps {
   language: string;
@@ -69,13 +71,63 @@ const Activity: FC<TypeProps> = (props) => {
   };
 
   const onClickPause = () => {
-    console.log('Pause');
     if (timerRunning) {
       setTimerRunning(false);
       BackgroundTimer.stopBackgroundTimer();
     } else {
       setTimerRunning(true);
       BackgroundTimer.start();
+    }
+  };
+
+  const onClickBack = () => {
+    console.log('Backk');
+    switch (activityName) {
+      case 'call':
+        props.onClickHome();
+        break;
+      case 'pray':
+        setActivityName('call');
+        setActivityTitle(t('Calling'));
+        setActivityDescription(t('CallingText'));
+        setTime(30);
+        break;
+      case 'prayread':
+        setActivityName('pray');
+        setActivityTitle(t('Praying'));
+        setActivityDescription(t('PrayingText'));
+        setTime(60);
+        break;
+      case 'confession':
+        setActivityName('prayread');
+        setActivityTitle(t('PrayReading'));
+        setActivityDescription(t('PrayReadingText'));
+        setTime(150);
+        break;
+      case 'consecration':
+        setActivityName('confession');
+        setActivityTitle(t('Confession'));
+        setActivityDescription(t('ConfessionText'));
+        setTime(60);
+        break;
+      case 'thanksgiving':
+        setActivityName('consecration');
+        setActivityTitle(t('Consecration'));
+        setActivityDescription(t('ConsecrationText'));
+        setTime(30);
+        break;
+      case 'petititon':
+        setActivityName('thanksgiving');
+        setActivityTitle(t('Thanksgiving'));
+        setActivityDescription(t('ThanksgivingText'));
+        setTime(30);
+        break;
+      case 'end':
+        setActivityName('petition');
+        setActivityTitle(t('Petition'));
+        setActivityDescription(t('PetitionText'));
+        setTime(60);
+        break;
     }
   };
 
@@ -168,15 +220,19 @@ const Activity: FC<TypeProps> = (props) => {
           </View>
         </View>
       )}
-
-      <View style={styles.viewWithMargin}>
-        <TouchableOpacity style={styles.buttonHome} onPress={onClickPause}>
-          <Text>Pause</Text>
+      <View style={styles.controlButtonsView}>
+        <TouchableOpacity style={styles.controlButtons} onPress={onClickBack}>
+          <AntDesign name="back" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonHome} onPress={onClickHome}>
+        <TouchableOpacity style={styles.controlButtons} onPress={onClickPause}>
+          {!timerRunning && <Feather name="play" size={24} color="black" />}
+          {timerRunning && <AntDesign name="pause" size={24} color="black" />}
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.controlButtons} onPress={onClickHome}>
           <Text>{t('End')}</Text>
         </TouchableOpacity>
       </View>
+
       {time < 0 && (
         <View>
           <View>
@@ -194,6 +250,7 @@ const styles = StyleSheet.create({
   buttonHome: {
     marginBottom: 4,
     height: 50,
+    width: 100,
     textAlign: 'center',
     justifyContent: 'center',
     fontSize: 16,
@@ -206,6 +263,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 16,
     padding: 8,
+  },
+  controlButtons: {
+    flex: 0.3,
+    marginBottom: 4,
+    height: 50,
+    width: 100,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 16,
+    backgroundColor: '#DDDDDD',
+    borderRadius: 15,
+    marginRight: 4,
+    marginLeft: 4,
+  },
+  controlButtonsView: {
+    marginVertical: 8,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
   },
   title: {
     textAlign: 'center',
