@@ -1,12 +1,21 @@
+/* npm imports */
 import React, {FC, useState, useEffect} from 'react';
 import BackgroundTimer from 'react-native-background-timer';
 import {useKeepAwake} from 'expo-keep-awake';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, View, Text, Alert, TouchableOpacity} from 'react-native';
-import {secondsToMinutes} from '../utils/secondsToMinutes';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Alert,
+  TouchableOpacity,
+  BackHandler,
+} from 'react-native';
 import {Audio} from 'expo-av';
 import {AntDesign} from '@expo/vector-icons';
 import {Feather} from '@expo/vector-icons';
+
+/* local module imports */
 import {
   CALLING_TIME,
   PRAYING_TIME,
@@ -15,8 +24,11 @@ import {
   CONFESSION_TIME,
   THANKSGIVING_TIME,
   PETITION_TIME,
+  SEVEN_MINUTES_TIME,
 } from '../utils/constants';
+import {secondsToMinutes} from '../utils/secondsToMinutes';
 
+/* TypeProps */
 interface TypeProps {
   language: string;
   title?: string; // Epoch number start time
@@ -37,13 +49,16 @@ interface TypeProps {
   petitionTimerRunning?: boolean;
   petitionTimerTime?: number;
   onClickHome: () => void; // call this on click of the dark tick button, passing the id
+  onTick: (remainingTime: number) => void;
 }
 
+/* Functional Component Declaration */
 const Activity: FC<TypeProps> = (props) => {
   useKeepAwake();
   const {t, i18n} = useTranslation();
   const soundObject = new Audio.Sound();
 
+  /* Hooks */
   const [activityName, setActivityName] = useState('call');
   const [activityTitle, setActivityTitle] = useState(t('Calling'));
   const [activityDescription, setActivityDescription] = useState(
@@ -51,143 +66,7 @@ const Activity: FC<TypeProps> = (props) => {
   );
   const [time, setTime] = useState(30);
   const [timerRunning, setTimerRunning] = useState(props.timerRunning);
-
-  const playAudio = async () => {
-    console.log('Play Audio');
-    await Audio.setAudioModeAsync({
-      staysActiveInBackground: true,
-      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-      shouldDuckAndroid: true,
-      playThroughEarpieceAndroid: true,
-      allowsRecordingIOS: true,
-      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-      playsInSilentModeIOS: true,
-    });
-    try {
-      const {sound: soundObject, status} = await Audio.Sound.createAsync(
-        require('./assets/sounds/sirius_mp3.mp3'),
-        {
-          shouldPlay: true,
-        },
-      );
-    } catch (error) {
-      // An error occurred!
-    }
-  };
-
-  const onClickHome = () => {
-    props.onClickHome();
-  };
-
-  const onClickPause = () => {
-    if (timerRunning) {
-      setTimerRunning(false);
-      BackgroundTimer.stopBackgroundTimer();
-    } else {
-      setTimerRunning(true);
-      BackgroundTimer.start();
-    }
-  };
-
-  const onClickBack = () => {
-    /* TODO: Need to find better solution for back button behaviour */
-    switch (activityName) {
-      case 'call':
-        if (time > CALLING_TIME - 2) {
-          props.onClickHome();
-        } else {
-          setActivityName('call');
-          setActivityTitle(t('Calling'));
-          setActivityDescription(t('CallingText'));
-          setTime(CALLING_TIME);
-        }
-        break;
-      case 'pray':
-        if (time > PRAYING_TIME - 2) {
-          setActivityName('call');
-          setActivityTitle(t('Calling'));
-          setActivityDescription(t('CallingText'));
-          setTime(CALLING_TIME);
-        } else {
-          setActivityName('pray');
-          setActivityTitle(t('Praying'));
-          setActivityDescription(t('PrayingText'));
-          setTime(PRAYING_TIME);
-        }
-        break;
-      case 'prayread':
-        if (time > PRAY_READING_TIME - 2) {
-          setActivityName('pray');
-          setActivityTitle(t('Praying'));
-          setActivityDescription(t('PrayingText'));
-          setTime(PRAYING_TIME);
-        } else {
-          setActivityName('prayread');
-          setActivityTitle(t('PrayReading'));
-          setActivityDescription(t('PrayReadingText'));
-          setTime(PRAY_READING_TIME);
-        }
-        break;
-      case 'confession':
-        if (time > CONFESSION_TIME - 2) {
-          setActivityName('prayread');
-          setActivityTitle(t('PrayReading'));
-          setActivityDescription(t('PrayReadingText'));
-          setTime(PRAY_READING_TIME);
-        } else {
-          setActivityName('confession');
-          setActivityTitle(t('Confession'));
-          setActivityDescription(t('ConfessionText'));
-          setTime(CONFESSION_TIME);
-        }
-        break;
-      case 'consecration':
-        if (time > CONSECRATION_TIME - 2) {
-          setActivityName('confession');
-          setActivityTitle(t('Confession'));
-          setActivityDescription(t('ConfessionText'));
-          setTime(CONFESSION_TIME);
-        } else {
-          setActivityName('consecration');
-          setActivityTitle(t('Consecration'));
-          setActivityDescription(t('ConsecrationText'));
-          setTime(CONSECRATION_TIME);
-        }
-        break;
-      case 'thanksgiving':
-        if (time > THANKSGIVING_TIME - 2) {
-          setActivityName('consecration');
-          setActivityTitle(t('Consecration'));
-          setActivityDescription(t('ConsecrationText'));
-          setTime(CONSECRATION_TIME);
-        } else {
-          setActivityName('thanksgiving');
-          setActivityTitle(t('Thanksgiving'));
-          setActivityDescription(t('ThanksgivingText'));
-          setTime(THANKSGIVING_TIME);
-        }
-        break;
-      case 'petititon':
-        if (time > PETITION_TIME - 2) {
-          setActivityName('thanksgiving');
-          setActivityTitle(t('Thanksgiving'));
-          setActivityDescription(t('ThanksgivingText'));
-          setTime(30);
-        } else {
-          setActivityName('petition');
-          setActivityTitle(t('Petition'));
-          setActivityDescription(t('PetitionText'));
-          setTime(PETITION_TIME);
-        }
-        break;
-      case 'end':
-        setActivityName('petition');
-        setActivityTitle(t('Petition'));
-        setActivityDescription(t('PetitionText'));
-        setTime(PETITION_TIME);
-        break;
-    }
-  };
+  const [remainingTime, setRemainingTime] = useState(SEVEN_MINUTES_TIME);
 
   useEffect(() => {
     if (timerRunning) {
@@ -199,7 +78,10 @@ const Activity: FC<TypeProps> = (props) => {
       // component re-renders
       // Start a timer that runs continuous after X milliseconds
       const intervalId = BackgroundTimer.setInterval(() => {
-        //code that will be called every 3 seconds
+        //code that will be called every 1 seconds
+        // Counting remaining time
+        setRemainingTime(remainingTime - 1);
+        props.onTick(remainingTime);
         setTime(time - 1);
         if (time === 0) {
           playAudio();
@@ -254,10 +136,210 @@ const Activity: FC<TypeProps> = (props) => {
       // add timeLeft as a dependency to re-rerun the effect
       // when we update it
     }
-  }, [props.timerRunning, time, timerRunning]);
+  }, [props.timerRunning, time, timerRunning, remainingTime]);
+
+  /* Functions */
+  const playAudio = async () => {
+    console.log('Play Audio');
+    await Audio.setAudioModeAsync({
+      staysActiveInBackground: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+      shouldDuckAndroid: true,
+      playThroughEarpieceAndroid: true,
+      allowsRecordingIOS: true,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+    });
+    try {
+      const {sound: soundObject, status} = await Audio.Sound.createAsync(
+        require('./assets/sounds/sirius_mp3.mp3'),
+        {
+          shouldPlay: true,
+        },
+      );
+    } catch (error) {
+      // An error occurred!
+    }
+  };
+
+  const onClickHome = () => {
+    props.onClickHome();
+  };
+
+  const onClickPause = () => {
+    if (timerRunning) {
+      setTimerRunning(false);
+      BackgroundTimer.stopBackgroundTimer();
+    } else {
+      setTimerRunning(true);
+      BackgroundTimer.start();
+    }
+  };
+
+  const onClickBack = () => {
+    /* TODO: Need to find better solution for back button behaviour */
+    switch (activityName) {
+      case 'call':
+        if (time > CALLING_TIME - 2) {
+          props.onClickHome();
+        } else {
+          setActivityName('call');
+          setActivityTitle(t('Calling'));
+          setActivityDescription(t('CallingText'));
+          setTime(CALLING_TIME);
+          setRemainingTime(SEVEN_MINUTES_TIME);
+        }
+        break;
+      case 'pray':
+        if (time > PRAYING_TIME - 2) {
+          setActivityName('call');
+          setActivityTitle(t('Calling'));
+          setActivityDescription(t('CallingText'));
+          setTime(CALLING_TIME);
+        } else {
+          setActivityName('pray');
+          setActivityTitle(t('Praying'));
+          setActivityDescription(t('PrayingText'));
+          setTime(PRAYING_TIME);
+          setRemainingTime(SEVEN_MINUTES_TIME - CALLING_TIME);
+        }
+        break;
+      case 'prayread':
+        if (time > PRAY_READING_TIME - 2) {
+          setActivityName('pray');
+          setActivityTitle(t('Praying'));
+          setActivityDescription(t('PrayingText'));
+          setTime(PRAYING_TIME);
+          setRemainingTime(SEVEN_MINUTES_TIME - CALLING_TIME);
+        } else {
+          setActivityName('prayread');
+          setActivityTitle(t('PrayReading'));
+          setActivityDescription(t('PrayReadingText'));
+          setTime(PRAY_READING_TIME);
+          setRemainingTime(SEVEN_MINUTES_TIME - (PRAYING_TIME + CALLING_TIME));
+        }
+        break;
+      case 'confession':
+        if (time > CONFESSION_TIME - 2) {
+          setActivityName('prayread');
+          setActivityTitle(t('PrayReading'));
+          setActivityDescription(t('PrayReadingText'));
+          setTime(PRAY_READING_TIME);
+          setRemainingTime(SEVEN_MINUTES_TIME - (PRAYING_TIME + CALLING_TIME));
+        } else {
+          setActivityName('confession');
+          setActivityTitle(t('Confession'));
+          setActivityDescription(t('ConfessionText'));
+          setTime(CONFESSION_TIME);
+          setRemainingTime(
+            SEVEN_MINUTES_TIME -
+              (PRAY_READING_TIME + PRAYING_TIME + CALLING_TIME),
+          );
+        }
+        break;
+      case 'consecration':
+        if (time > CONSECRATION_TIME - 2) {
+          setActivityName('confession');
+          setActivityTitle(t('Confession'));
+          setActivityDescription(t('ConfessionText'));
+          setTime(CONFESSION_TIME);
+          setRemainingTime(
+            SEVEN_MINUTES_TIME -
+              (PRAY_READING_TIME + PRAYING_TIME + CALLING_TIME),
+          );
+        } else {
+          setActivityName('consecration');
+          setActivityTitle(t('Consecration'));
+          setActivityDescription(t('ConsecrationText'));
+          setTime(CONSECRATION_TIME);
+          setRemainingTime(
+            SEVEN_MINUTES_TIME -
+              (PRAY_READING_TIME +
+                PRAYING_TIME +
+                CALLING_TIME +
+                CONFESSION_TIME),
+          );
+        }
+        break;
+      case 'thanksgiving':
+        if (time > THANKSGIVING_TIME - 2) {
+          setActivityName('consecration');
+          setActivityTitle(t('Consecration'));
+          setActivityDescription(t('ConsecrationText'));
+          setTime(CONSECRATION_TIME);
+          setRemainingTime(
+            SEVEN_MINUTES_TIME -
+              (PRAY_READING_TIME +
+                PRAYING_TIME +
+                CALLING_TIME +
+                CONFESSION_TIME),
+          );
+        } else {
+          setActivityName('thanksgiving');
+          setActivityTitle(t('Thanksgiving'));
+          setActivityDescription(t('ThanksgivingText'));
+          setTime(THANKSGIVING_TIME);
+          setRemainingTime(
+            SEVEN_MINUTES_TIME -
+              (PRAY_READING_TIME +
+                PRAYING_TIME +
+                CALLING_TIME +
+                CONFESSION_TIME +
+                CONSECRATION_TIME),
+          );
+        }
+        break;
+      case 'petititon':
+        if (time > PETITION_TIME - 2) {
+          setActivityName('thanksgiving');
+          setActivityTitle(t('Thanksgiving'));
+          setActivityDescription(t('ThanksgivingText'));
+          setTime(THANKSGIVING_TIME);
+          setRemainingTime(
+            SEVEN_MINUTES_TIME -
+              (PRAY_READING_TIME +
+                PRAYING_TIME +
+                CALLING_TIME +
+                CONFESSION_TIME +
+                CONSECRATION_TIME),
+          );
+        } else {
+          setActivityName('petition');
+          setActivityTitle(t('Petition'));
+          setActivityDescription(t('PetitionText'));
+          setTime(PETITION_TIME);
+          setRemainingTime(
+            SEVEN_MINUTES_TIME -
+              (PRAY_READING_TIME +
+                PRAYING_TIME +
+                CALLING_TIME +
+                CONFESSION_TIME +
+                CONSECRATION_TIME +
+                THANKSGIVING_TIME),
+          );
+        }
+        break;
+      case 'end':
+        setActivityName('petition');
+        setActivityTitle(t('Petition'));
+        setActivityDescription(t('PetitionText'));
+        setTime(PETITION_TIME);
+        setRemainingTime(
+          SEVEN_MINUTES_TIME -
+            (PRAY_READING_TIME +
+              PRAYING_TIME +
+              CALLING_TIME +
+              CONFESSION_TIME +
+              CONSECRATION_TIME +
+              THANKSGIVING_TIME),
+        );
+        break;
+    }
+  };
 
   const startTimer = () => {};
 
+  /* Render Components */
   return (
     <View>
       <View style={styles.viewWithMargin}>
@@ -304,6 +386,7 @@ const Activity: FC<TypeProps> = (props) => {
   );
 };
 
+/* Stylesheets */
 const styles = StyleSheet.create({
   buttonHome: {
     marginBottom: 4,

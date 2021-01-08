@@ -28,3 +28,5 @@ export const CONFESSION_TIME = 60;
 export const CONSECRATION_TIME = 30;
 export const THANKSGIVING_TIME = 30;
 export const PETITION_TIME = 60;
+
+export const SEVEN_MINUTES_TIME = 419;

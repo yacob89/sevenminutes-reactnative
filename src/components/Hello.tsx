@@ -13,6 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import Activity from './Activity';
+import {secondsToMinutes} from '../utils/secondsToMinutes';
 
 interface TypeProps {
   title: string;
@@ -43,6 +44,7 @@ const Hello: FC<TypeProps> = (props) => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [timesPressed, setTimesPressed] = useState(0);
   const [activityLanguage, setActivityLanguage] = useState('en');
+  const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
     const backAction = () => {
@@ -117,6 +119,10 @@ const Hello: FC<TypeProps> = (props) => {
     ]);
   };
 
+  const onTick = (remainingTime: number) => {
+    let remainingTimeString = secondsToMinutes(remainingTime);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.pickerContainer}>
@@ -143,6 +149,7 @@ const Hello: FC<TypeProps> = (props) => {
             timerRunning={timerStarted}
             activityName={'call'}
             onClickHome={onClickHome}
+            onTick={onTick}
           />
         )}
       </View>
