@@ -32,3 +32,10 @@ const pad = (n: number) => {
   }
   return n.toString();
 };
+
+export const secondsToMinutesFloat = (val: number):string => {
+  const minutes = Math.floor(val / 60);
+  const seconds = (Math.floor(parseInt(pad(val % 60)))) / 60;
+  const formatSeconds = seconds.toFixed(2).toString().split('.')[1]
+  return `${minutes}.${formatSeconds}`
+}

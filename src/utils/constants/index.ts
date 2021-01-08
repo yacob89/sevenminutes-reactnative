@@ -29,4 +29,12 @@ export const CONSECRATION_TIME = 30;
 export const THANKSGIVING_TIME = 30;
 export const PETITION_TIME = 60;
 
+export const CALLING_REMAINING_TIME = 7;
+export const PRAYING_REMAINING_TIME = 6.5;
+export const PRAY_READING_REMAINING_TIME = 5.5;
+export const CONFESSION_REMAINING_TIME = 3;
+export const CONSECRATION_REMAINING_TIME = 2;
+export const THANKSGIVING_REMAINING_TIME = 1.5;
+export const PETITION_REMAINING_TIME = 1;
+
 export const SEVEN_MINUTES_TIME = 419;

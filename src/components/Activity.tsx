@@ -25,6 +25,13 @@ import {
   THANKSGIVING_TIME,
   PETITION_TIME,
   SEVEN_MINUTES_TIME,
+  CALLING_REMAINING_TIME,
+  PRAYING_REMAINING_TIME,
+  PRAY_READING_REMAINING_TIME,
+  CONSECRATION_REMAINING_TIME,
+  CONFESSION_REMAINING_TIME,
+  THANKSGIVING_REMAINING_TIME,
+  PETITION_REMAINING_TIME,
 } from '../utils/constants';
 import {secondsToMinutes} from '../utils/secondsToMinutes';
 
@@ -187,7 +194,8 @@ const Activity: FC<TypeProps> = (props) => {
           setActivityTitle(t('Calling'));
           setActivityDescription(t('CallingText'));
           setTime(CALLING_TIME);
-          setRemainingTime(SEVEN_MINUTES_TIME);
+          //setRemainingTime(SEVEN_MINUTES_TIME);
+          setRemainingTime(CALLING_REMAINING_TIME);
         }
         break;
       case 'pray':
@@ -196,6 +204,7 @@ const Activity: FC<TypeProps> = (props) => {
           setActivityTitle(t('Calling'));
           setActivityDescription(t('CallingText'));
           setTime(CALLING_TIME);
+          setRemainingTime(SEVEN_MINUTES_TIME);
         } else {
           setActivityName('pray');
           setActivityTitle(t('Praying'));
@@ -375,7 +384,7 @@ const Activity: FC<TypeProps> = (props) => {
 
       {time < 0 && (
         <View>
-          <View>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <TouchableOpacity style={styles.buttonHome} onPress={onClickHome}>
               <Text>Back To Home</Text>
             </TouchableOpacity>

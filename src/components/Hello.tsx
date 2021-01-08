@@ -13,7 +13,10 @@ import {
   Alert,
 } from 'react-native';
 import Activity from './Activity';
-import {secondsToMinutes} from '../utils/secondsToMinutes';
+import {
+  secondsToMinutes,
+  secondsToMinutesFloat,
+} from '../utils/secondsToMinutes';
 
 interface TypeProps {
   title: string;
@@ -44,7 +47,7 @@ const Hello: FC<TypeProps> = (props) => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [timesPressed, setTimesPressed] = useState(0);
   const [activityLanguage, setActivityLanguage] = useState('en');
-  const [remainingTime, setRemainingTime] = useState(0);
+  const [remainingTime, setRemainingTime] = useState('7');
 
   useEffect(() => {
     const backAction = () => {
@@ -58,14 +61,18 @@ const Hello: FC<TypeProps> = (props) => {
           {text: 'YES', onPress: () => BackHandler.exitApp()},
         ]);
       } else {
-        Alert.alert('Warning', t('ExitWarning'), [
-          {
-            text: 'RESUME',
-            onPress: () => {},
-            style: 'cancel',
-          },
-          {text: 'EXIT ANYWAY', onPress: () => setTimerStarted(false)},
-        ]);
+        Alert.alert(
+          'Warning',
+          t('ExitWarningOpening') + remainingTime + t('ExitWarningClosing'),
+          [
+            {
+              text: 'RESUME',
+              onPress: () => {},
+              style: 'cancel',
+            },
+            {text: 'EXIT ANYWAY', onPress: () => setTimerStarted(false)},
+          ],
+        );
       }
 
       return true;
@@ -109,18 +116,28 @@ const Hello: FC<TypeProps> = (props) => {
   };
 
   const onClickHome = () => {
-    Alert.alert('Warning', t('ExitWarning'), [
-      {
-        text: 'RESUME',
-        onPress: () => {},
-        style: 'cancel',
-      },
-      {text: 'EXIT ANYWAY', onPress: () => setTimerStarted(false)},
-    ]);
+    if (parseFloat(remainingTime) < 0) {
+      setTimerStarted(false);
+    } else {
+      Alert.alert(
+        'Warning',
+        t('ExitWarningOpening') + remainingTime + t('ExitWarningClosing'),
+        [
+          {
+            text: 'RESUME',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {text: 'EXIT ANYWAY', onPress: () => setTimerStarted(false)},
+        ],
+      );
+    }
   };
 
   const onTick = (remainingTime: number) => {
-    let remainingTimeString = secondsToMinutes(remainingTime);
+    //let remainingTimeString = secondsToMinutes(remainingTime);
+    let remainingTimeString = secondsToMinutesFloat(remainingTime);
+    setRemainingTime(remainingTimeString);
   };
 
   return (
