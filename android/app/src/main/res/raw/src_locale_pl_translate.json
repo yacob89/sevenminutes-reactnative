@@ -15,6 +15,8 @@
   "ThanksgivingText": "Podziękowanie za wszystko: wszystkie osoby, sytuacje, rzeczy w naszym życiu oraz chwalenie Pana – Ef 5:20; 1 Tes 5:18",
   "PetitionText": "Prośba o to, czego potrzebujemy, o wzrost, a także o osoby, które potrzebują zbawienia – 1 Tm 2:1; Ef 6:18; Mt 7:7; Ps 143:8",
   "ExitWarning": "[Jezus] powiedział…: Tak więc nie byliście w stanie czuwać ze Mną przez [jeszcze xx minut(y)]? Czuwajcie i módlcie się, abyście nie popadli w pokusę; duch wprawdzie ochoczy, ale ciało słabe. (Mt 26:40b-41)",
+  "ExitWarningOpening": "[Jezus] powiedział…: Tak więc nie byliście w stanie czuwać ze Mną przez [jeszcze ",
+  "ExitWarningClosing": " minut(y)]? Czuwajcie i módlcie się, abyście nie popadli w pokusę; duch wprawdzie ochoczy, ale ciało słabe. (Mt 26:40b-41)",
   "Hallelujah": "Alleluja",
   "End": "Koniec",
   "1": "",
